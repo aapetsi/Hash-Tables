@@ -33,8 +33,11 @@ class HashTable:
         Hash an arbitrary key using DJB2 hash
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
-
+        _hash = 5381
+        for char in key:
+            _hash = (_hash * 33) + ord(c)
+        return _hash
+            
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
