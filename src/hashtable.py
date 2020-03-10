@@ -61,7 +61,7 @@ class HashTable:
             self.storage[index] = new_node
             return new_node.value
 
-        # handle collision
+        # handle collision and already existing keys
         # iterate to end of array
         prev = node
         key_exists = False
