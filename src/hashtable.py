@@ -39,7 +39,7 @@ class HashTable:
         '''
         _hash = 5381
         for char in key:
-            _hash = (_hash * 33) + ord(c)
+            _hash = (_hash * 33) + ord(char)
         return _hash
             
     def _hash_mod(self, key):
@@ -173,4 +173,4 @@ if __name__ == "__main__":
     print(ht.retrieve("line_2"))
     print(ht.retrieve("line_3"))
 
-    print("")
+    print(ht._hash_djb2('apetsi'))
