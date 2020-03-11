@@ -8,6 +8,7 @@ class LinkedPair:
         self.key = key
         self.value = value
         self.next = None
+        self.resized = False
 
 
 class HashTable:
@@ -20,6 +21,9 @@ class HashTable:
         self.count = 0
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
+
+    def _load_factor(self):
+        return self.count / self.capacity
 
     def _hash(self, key):
         '''
@@ -114,6 +118,19 @@ class HashTable:
             return node.value
         else:
             return None
+    
+    def mod_resize(self, factor):
+        oldStorage = self.storage
+        oldCount = self.count
+        self.count = 0
+        self.capacity *= factor
+        self.storage = [None] * self.capacity
+        for i in range(0, oldCount):
+            bucket = oldStorage[i]
+            if bucket is not None:
+                while bucket is not None:
+                    self.insert(bucket.key, bucket.value)
+                    bucket = bucket.next
 
     def resize(self):
         '''
@@ -121,18 +138,13 @@ class HashTable:
         rehash all key/value pairs.
         Fill this in.
         '''
-        if self.count >= self.capacity:
-            oldStorage = self.storage
-            oldCount = self.count
-            self.count = 0
-            self.capacity *= 2
-            self.storage = [None] * self.capacity
-            for i in range(0, oldCount):
-                bucket = oldStorage[i]
-                if bucket is not None:
-                    while bucket is not None:
-                        self.insert(bucket.key, bucket.value)
-                        bucket = bucket.next
+        load_factor = self._load_factor()
+        if load_factor >= 0.7:
+            self.mod_resize(2)
+        elif load_factor <= 0.2:
+            self.mod_resize(0.5)
+        
+            
 
 
 if __name__ == "__main__":
